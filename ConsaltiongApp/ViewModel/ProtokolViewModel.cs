@@ -23,7 +23,7 @@ namespace ConsaltiongApp.ViewModel
         /// </summary>
         public const string ProtokolListPropertyName = "ProtokolList";
 
-        private List<Protokol> _myProperty = null;
+        private List<Protocol> _myProperty = null;
 
         /// <summary>
         /// Gets the ProtokolList property.
@@ -31,7 +31,7 @@ namespace ConsaltiongApp.ViewModel
         /// Changes to that property's value raise the PropertyChanged event. 
         /// This property's value is broadcasted by the Messenger's default instance when it changes.
         /// </summary>
-        public List<Protokol> ProtokolList
+        public List<Protocol> ProtokolList
         {
             get
             {
@@ -92,7 +92,7 @@ namespace ConsaltiongApp.ViewModel
             ////{
             ////    // Code runs "for real": Connect to service, etc...
             ////}
-            GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<List<Protokol>>(this, UpdateProtokolList);
+            GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<List<Protocol>>(this, UpdateProtokolList);
             GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, UpdateChoise);
         }
 
@@ -101,7 +101,7 @@ namespace ConsaltiongApp.ViewModel
             Choise = c;
         }
 
-        private void UpdateProtokolList(List<Protokol> listP)
+        private void UpdateProtokolList(List<Protocol> listP)
         {
             ProtokolList = listP;
         }

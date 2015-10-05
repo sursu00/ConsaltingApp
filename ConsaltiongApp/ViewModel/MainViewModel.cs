@@ -1,20 +1,24 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using ConsaltiongApp.View;
 using DomainModel.Entities;
 using DomainModel.Repository;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using DomainModel.SQLiteRepository;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace ConsaltiongApp.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly IQuestionRepository repository;
+        private readonly IQuestionRepository _repository;
 
-        private List<Protokol> protokol;
-        private int? _currentAnswer;
+        private List<Protocol> protokol;
+        private int? _currentAnswerId;
+        private Question[] _questions;
 
         public RelayCommand<string> GoNextCommand { get; private set; }
         public RelayCommand<string> TakeVariantAnswerCommand { get; private set; }
@@ -22,19 +26,10 @@ namespace ConsaltiongApp.ViewModel
         public RelayCommand<object> EditQuestionCommand { get; private set; }
         public RelayCommand RestartConsalting { get; private set; }
 
-        /// <summary>
-        /// The <see cref="CurrentQuestion" /> property's name.
-        /// </summary>
         public const string CurrentQuestionPropertyName = "CurrentQuestion";
-
+        
         private Question _currentQuestion;
 
-        /// <summary>
-        /// Gets the CurrentQuestion property.
-        /// TODO Update documentation:
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// This property's value is broadcasted by the Messenger's default instance when it changes.
-        /// </summary>
         public Question CurrentQuestion
         {
             get
@@ -53,207 +48,53 @@ namespace ConsaltiongApp.ViewModel
                 RaisePropertyChanged(CurrentQuestionPropertyName);
             }
         }
-                
-        private int? CurrentAnswer
-        {
-            get { return _currentAnswer; }
-        }
-
-        /// <summary>
-        /// The <see cref="Questions" /> property's name.
-        /// </summary>
-        public const string QuestionsPropertyName = "Questions";
-
-        private ObservableCollection<Question> questions = null;
-
-        /// <summary>
-        /// Gets the Questions property.
-        /// TODO Update documentation:
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// This property's value is broadcasted by the Messenger's default instance when it changes.
-        /// </summary>
-        public ObservableCollection<Question> Questions
-        {
-            get
-            {
-                return questions;
-            }
-
-            set
-            {
-                if (questions == value)
-                {
-                    return;
-                }
-
-                questions = value;
-                RaisePropertyChanged(QuestionsPropertyName);
-            }
-        }
-
-        //public List<Question> ListQuestion
-        //{
-        //    get 
-        //    {
-        //        return new List<Question>()
-        //        {
-        //            new Question 
-        //            { 
-        //                Id = 1, 
-        //                Title = "Вопрос №1", 
-        //                Answers = new List<string> { "Ответ 1", "Ответ 2", "Ответ 3", "Ответ 4" }, 
-        //                Questions = new List<Question>()
-        //                {
-        //                    new Question { Id = 2, Title = "Вопрос №2", Answers = new List<string> { "Ответ 1", "Ответ 2", "Ответ 3", "Ответ 4" }, Questions = new List<Question>() },
-        //                    new Question { Id = 3, Title = "Вопрос №3", Answers = new List<string> { "Ответ 1", "Ответ 2", "Ответ 3", "Ответ 4" }, Questions = new List<Question>() {new Question { Id = 4, Title = "Вопрос №4", Answers = new List<string> { "Ответ 1", "Ответ 2", "Ответ 3", "Ответ 4" }, Questions = new List<Question>() }}}
-        //                } 
-        //            }                   
-        //        };
-        //    }
-        //}
-
-        public string Welcome
-        {
-            get
-            {
-                return "Welcome to MVVM Light";
-            }
-        }
-
-
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
+        
         public MainViewModel()
         {
-            if (IsInDesignMode)
-            {
-                // Code runs in Blend --> create design time data.
-            }
-            else
-            {
-                // Code runs "for real"
-            }
-            //Инициализация репозитория
-            repository = new QuestionRepository();
+            _repository = new QuestionRepository();
 
-            //Инициализация команд
             GoNextCommand = new RelayCommand<string>(x => DoSomething());
-            TakeVariantAnswerCommand = new RelayCommand<string>(x => _currentAnswer = int.Parse(x));
+            TakeVariantAnswerCommand = new RelayCommand<string>(x => _currentAnswerId = int.Parse(x));
             AddNewQuestionCommand = new RelayCommand<object>(OpenAddQuestionDialog);
             EditQuestionCommand = new RelayCommand<object>(OpenEditQuestionDialog);
             RestartConsalting = new RelayCommand(Initialize);
-            //Инициализация вопросов
-            Initialize();            
 
-            //Messenger
-            GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<Question>(this, SaveQuestion);            
-            //SaveQuestion(null);
+            Messenger.Default.Register<Question>(this, SaveQuestion);
+
+            Initialize();
+        }
+
+        private void SaveQuestion(Question q)
+        {
         }
 
         private void Initialize()
         {
-            var q = repository.GetQuestions();
-            Questions = new ObservableCollection<Question>(q);
-            CurrentQuestion = q.First();
-            protokol = new List<Protokol>();
+            _questions = _repository.GetQuestions();
+            CurrentQuestion = _questions.OrderBy(x => Guid.NewGuid()).First();
+            protokol = new List<Protocol>();
         }
 
         private void OpenEditQuestionDialog(object x)
         {
-            var addW = new View.AddQuestionView();
-            GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<Question, AddQuestionViewModel>((Question)x);
+            var addW = new AddQuestionView();
+            Messenger.Default.Send<Question, AddQuestionViewModel>((Question)x);
             addW.ShowDialog();
         }
-
-        //private void UpdateCollection(List<Question> collection, Question q)
-        //{
-        //    foreach (var c in collection)
-        //    {
-        //        if (c.Id == q.Id)
-        //        {
-        //            c.Answers = q.Answers;
-        //            c.Title = q.Title;
-        //            c.Questions = q.Questions;
-        //            c.IsFree = q.IsFree;
-        //        }
-        //        //if (c.Title == "Какой размер диагонали должен иметь монитор?")
-        //        //    c.Answers[2] = "больше 19";
-        //        UpdateCollection((List<Question>)c.Questions, q);
-        //    }
-        //}
-
-        private void SaveQuestion(Question q)
-        {
-            //var temp = new List<Question>(new Question[] { repository.GetFirstQuestion() });
-            //UpdateCollection(temp, q);
-            //repository.Add(temp[0]);
-            //Questions = new ObservableCollection<Question>(new Question[] { repository.GetFirstQuestion() });
-            //return;
-            //
-            //Questions = new ObservableCollection<Question>(new Question[] { repository.GetQuestionById("099c1801940cedb415000000") });
-            //return;
-            //repository.Add(
-            //    new Question
-            //        {
-            //            Title = "Какой размер диагонали должен иметь монитор?",
-            //            Answers = new List<string> { "меньше 19\"", "19\"", "больше 19\"" },
-            //            Questions = new List<Question>()
-            //            {
-            //                new Question { Title = "Какая контрастность наиболее предподчтительна?", Answers = new List<string> { "1000:1", "800:1"}, Questions = new List<Question>() 
-            //                                 {
-            //                                     new Question {Title = "LG TFT 16 800s silver", Answers = new List<string> { "в наличии"}, Questions = new List<Question>() },
-            //                                     new Question {Title = "Какова предпочтительная яркость монитора?", Answers = new List<string> { "400 cd/кв.м", "300 cd/кв.м"}, Questions = new List<Question>() 
-            //                                                  {
-            //                                                      new Question {Title = "Требуется ли покупка в кредит?", Answers = new List<string> { "нет", "да"}, Questions = new List<Question>() },
-            //                                                      new Question {Title = "Какой цвет более предпочтителен?", Answers = new List<string> { "черный", "серый"}, Questions = new List<Question>() }
-            //                                                  }
-            //                                     }
-            //                                 }
-            //                },
-            //                new Question { Title = "Выберите предпочтительный размер пикселя :", Answers = new List<string> { "0.3 мм", "больше 0.4 мм"}, Questions = new List<Question>() 
-            //                {
-            //                    new Question {Title = "Какова средняя цена монитора?", Answers = new List<string> { "4 000 руб", "5 000 руб"}, Questions = new List<Question>()},
-            //                    new Question {Title = "Каково максимальное разрешение монитора?", Answers = new List<string> { "1600х1200", "1024х768"}, Questions = new List<Question>() }
-            //                    //,new Question {Title = "Delete Q!!!", Answers = new List<string> { "blavlbs1", "skfjsdl2"}, Questions = new List<Question>() }
-            //                }},
-            //                new Question { Title = "Какова средняя цена монитора?", Answers = new List<string> { "20 000 руб.", "более 25 000 руб."}, Questions = new List<Question>() }
-            //                }
-            //        }
-            //    );
-            //Questions = new ObservableCollection<Question>(new Question[] { repository.GetFirstQuestion() });
-            //new Question
-            //{
-            //    Title = "Диагональ",
-            //    Answers = new List<string> { ">19", "19", "<19" },
-            //    Questions = new List<Question>()
-            //            {
-            //                new Question { Title = "Цена", Answers = new List<string> { ">20000", ">40000" }, Questions = new List<Question>() },
-            //                new Question { Title = "Размер пикселя", Answers = new List<string> { "0.3", "0.4" }, Questions = new List<Question>() },
-            //                new Question { Title = "Контрастность", Answers = new List<string> { "800:1", "1000:1" }, Questions = new List<Question>() }
-            //            }
-            //};
-        }
-
+        
         private void OpenAddQuestionDialog(object q)
         {
-            var addW = new View.AddQuestionView();
+            var addW = new AddQuestionView();
             Question x = new Question();
-            //x.Id = ((Question)q).Id;
-            GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<List<Question>, AddQuestionViewModel>(new List<Question>(new Question[] { (Question)q, x }));
+            Messenger.Default.Send<List<Question>, AddQuestionViewModel>(new List<Question>(new[] { (Question)q, x }));
             addW.ShowDialog();
         }
 
         private void DoSomething()
         {
-            if (_currentAnswer == null)
+            if (_currentAnswerId == null)
             {
-                //if (CurrentQuestion.IsFree)
-                //{
-                //    System.Windows.MessageBox.Show("Введите ответ");
-                //    return;
-                //}
-                System.Windows.MessageBox.Show("Выберете вариант ответа");
+                MessageBox.Show("Выберете вариант ответа");
                 return;
             }
             
@@ -294,14 +135,15 @@ namespace ConsaltiongApp.ViewModel
             //    //Обычный ответ (Не свободный)
             //    index = currentQuestion.Answers.IndexOf(currentAnswer);
             //}
-            var isCorrect = _currentQuestion.Answers.First(x => x.Id == _currentAnswer).IsCorrect;
-            System.Windows.MessageBox.Show(isCorrect.ToString());
+            var answer = _currentQuestion.Answers.First(x => x.Id == _currentAnswerId);
+            var isCorrect = answer.IsCorrect;
+            MessageBox.Show(isCorrect.ToString());
             //try
             //{
             //    var temp = currentQuestion.Questions[index];                
 
-            //    //Ведение протокола
-            //    protokol.Add(new Protokol { Question = currentQuestion.Title, Answer = currentAnswer });
+            //Ведение протокола
+            protokol.Add(new Protocol(_currentQuestion.Id, _currentAnswerId.Value));
 
             //    CurrentQuestion = temp;
             //    RaisePropertyChanged("VisibilityAnswers");
@@ -316,7 +158,7 @@ namespace ConsaltiongApp.ViewModel
             //if (currentQuestion.Questions.Count == 0)
             //{
             //    var protokolWindow = new View.ProtokolView();
-            //    GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<List<Protokol>, ProtokolViewModel>(protokol);
+            //    GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<List<Protocol>, ProtokolViewModel>(protokol);
             //    GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string, ProtokolViewModel>(currentQuestion.Title);
             //    protokolWindow.ShowDialog();
             //    return;

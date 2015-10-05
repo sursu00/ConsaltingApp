@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Answer.cs" />
-    <Compile Include="Entities\Protokol.cs" />
+    <Compile Include="Entities\Protocol.cs" />
     <Compile Include="Entities\Question.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IConnectionFactory.cs" />

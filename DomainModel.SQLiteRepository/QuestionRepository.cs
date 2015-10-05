@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -17,11 +16,6 @@ namespace DomainModel.SQLiteRepository
         public QuestionRepository()
         {
             _connectionFactory = new DefaultConnectionFactory();
-        }
-
-        public Question GetQuestionById(string id)
-        {
-            throw new NotImplementedException();
         }
 
         public Question[] GetQuestions()
