@@ -90,7 +90,7 @@ namespace Importer
                     var questionId = i - 1;
 
                     questions.Cells[i, 1].Value = questionId;
-                    questions.Cells[i, 2].Value = "Вопрос № " + i;
+                    questions.Cells[i, 2].Value = "Вопрос № " + questionId;
 
                     var index = (questionId - 1)*4 + 2;
 

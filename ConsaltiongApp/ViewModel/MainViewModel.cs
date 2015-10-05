@@ -1,5 +1,4 @@
-﻿using System;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using DomainModel.Entities;
 using DomainModel.Repository;
@@ -10,24 +9,12 @@ using DomainModel.SQLCeRepository;
 
 namespace ConsaltiongApp.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm/getstarted
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private IQuestionRepository repository;
+        private readonly IQuestionRepository repository;
 
         private List<Protokol> protokol;
-        private string currentAnswer;
+        private int? _currentAnswer;
 
         public RelayCommand<string> GoNextCommand { get; private set; }
         public RelayCommand<string> TakeVariantAnswerCommand { get; private set; }
@@ -40,7 +27,7 @@ namespace ConsaltiongApp.ViewModel
         /// </summary>
         public const string CurrentQuestionPropertyName = "CurrentQuestion";
 
-        private Question currentQuestion = null;
+        private Question _currentQuestion;
 
         /// <summary>
         /// Gets the CurrentQuestion property.
@@ -52,24 +39,24 @@ namespace ConsaltiongApp.ViewModel
         {
             get
             {
-                return currentQuestion;
+                return _currentQuestion;
             }
 
             set
             {
-                if (currentQuestion == value)
+                if (_currentQuestion == value)
                 {
                     return;
                 }
 
-                currentQuestion = value;
+                _currentQuestion = value;
                 RaisePropertyChanged(CurrentQuestionPropertyName);
             }
         }
                 
-        private string CurrentAnswer
+        private int? CurrentAnswer
         {
-            get { return currentAnswer; }
+            get { return _currentAnswer; }
         }
 
         /// <summary>
@@ -134,29 +121,6 @@ namespace ConsaltiongApp.ViewModel
         }
 
 
-        public object VisibilityAnswers
-        {
-            get 
-            {
-                throw new NotImplementedException();
-                //if (currentQuestion.IsFree)
-                //    return System.Windows.Visibility.Hidden;
-                //else
-                    return System.Windows.Visibility.Visible;
-            }
-        }
-        public object VisibilityTextBoxForFreeQuestion
-        {
-            get
-            {
-
-                throw new NotImplementedException();
-                //if (currentQuestion.IsFree)
-                //    return System.Windows.Visibility.Visible;
-                //else
-                    return System.Windows.Visibility.Hidden;
-            }
-        }
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -173,11 +137,11 @@ namespace ConsaltiongApp.ViewModel
             //Инициализация репозитория
             repository = new QuestionRepository();
 
-            ///Инициализация команд
+            //Инициализация команд
             GoNextCommand = new RelayCommand<string>(x => DoSomething());
-            TakeVariantAnswerCommand = new RelayCommand<string>(x => currentAnswer = x);
-            AddNewQuestionCommand = new RelayCommand<object>(x => OpenAddQuestionDialog(x));
-            EditQuestionCommand = new RelayCommand<object>(x => OpenEditQuestionDialog(x));
+            TakeVariantAnswerCommand = new RelayCommand<string>(x => _currentAnswer = int.Parse(x));
+            AddNewQuestionCommand = new RelayCommand<object>(OpenAddQuestionDialog);
+            EditQuestionCommand = new RelayCommand<object>(OpenEditQuestionDialog);
             RestartConsalting = new RelayCommand(Initialize);
             //Инициализация вопросов
             Initialize();            
@@ -282,16 +246,16 @@ namespace ConsaltiongApp.ViewModel
 
         private void DoSomething()
         {
-            //if (currentAnswer == null)
-            //{
-            //    //if (CurrentQuestion.IsFree)
-            //    //{
-            //    //    System.Windows.MessageBox.Show("Введите ответ");
-            //    //    return;
-            //    //}
-            //    System.Windows.MessageBox.Show("Выберете вариант ответа");
-            //    return;
-            //}
+            if (_currentAnswer == null)
+            {
+                //if (CurrentQuestion.IsFree)
+                //{
+                //    System.Windows.MessageBox.Show("Введите ответ");
+                //    return;
+                //}
+                System.Windows.MessageBox.Show("Выберете вариант ответа");
+                return;
+            }
             
             ////index - индекс ответа в string[] Answers
             //int index = 0;
@@ -330,12 +294,12 @@ namespace ConsaltiongApp.ViewModel
             //    //Обычный ответ (Не свободный)
             //    index = currentQuestion.Answers.IndexOf(currentAnswer);
             //}
-            
-                        
+            var isCorrect = _currentQuestion.Answers.First(x => x.Id == _currentAnswer).IsCorrect;
+            System.Windows.MessageBox.Show(isCorrect.ToString());
             //try
             //{
             //    var temp = currentQuestion.Questions[index];                
-                
+
             //    //Ведение протокола
             //    protokol.Add(new Protokol { Question = currentQuestion.Title, Answer = currentAnswer });
 

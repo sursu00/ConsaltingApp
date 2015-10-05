@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -27,7 +28,13 @@ namespace DomainModel.SQLCeRepository
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
-                return connection.GetList<Question>().ToArray();
+                var answers = connection.GetList<Answer>().ToArray();
+                var questions = connection.GetList<Question>().ToList();
+                foreach (var question in questions)
+                {
+                    question.Answers = answers.Where(x => x.QuestionId == question.Id).ToList();
+                }
+                return questions.ToArray();
             }
         }
 
