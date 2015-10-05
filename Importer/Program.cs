@@ -19,16 +19,29 @@ namespace Importer
 
         private static void Main(string[] args)
         {
-            //GenerateInputExcel();
-
-            var repository = new QuestionRepository();
-            repository.InitDb();
-
-            var questions = ParseInputExcel();
-
-            foreach (var question in questions)
+            if (args.Length != 1)
             {
-                repository.Add(question);
+                Console.WriteLine("importer.exe generate-excel");
+                Console.WriteLine("importer.exe run");
+                return;
+            }
+
+            var command = args[0];
+
+            if (command == "generate-excel")
+                GenerateInputExcel();
+
+            if (command == "run")
+            {
+                var repository = new QuestionRepository();
+                repository.InitDb();
+
+                var questions = ParseInputExcel();
+
+                foreach (var question in questions)
+                {
+                    repository.Add(question);
+                }
             }
         }
 

@@ -192,3 +192,5 @@ $RECYCLE.BIN/
 *.ide
 *.chk
 *.jrs
+
+.data
