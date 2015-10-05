@@ -7,8 +7,8 @@
     <ProjectGuid>{C3DEF5FE-A363-4CCD-98CE-A87402242EB9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DomainModel.SQLCeRepository</RootNamespace>
-    <AssemblyName>DomainModel.SQLCeRepository</AssemblyName>
+    <RootNamespace>DomainModel.SQLiteRepository</RootNamespace>
+    <AssemblyName>DomainModel.SQLiteRepository</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>ec6baed4</NuGetPackageImportStamp>

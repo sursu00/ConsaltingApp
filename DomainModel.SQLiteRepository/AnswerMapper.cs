@@ -1,7 +1,7 @@
 ﻿using DapperExtensions.Mapper;
 using DomainModel.Entities;
 
-namespace DomainModel.SQLCeRepository
+namespace DomainModel.SQLiteRepository
 {
     public sealed class AnswerMapper : ClassMapper<Answer>
     {

@@ -8,7 +8,7 @@ using DapperExtensions;
 using DomainModel.Entities;
 using DomainModel.Repository;
 
-namespace DomainModel.SQLCeRepository
+namespace DomainModel.SQLiteRepository
 {
     public class QuestionRepository : IQuestionRepository
     {

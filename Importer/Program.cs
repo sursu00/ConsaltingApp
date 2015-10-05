@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using DomainModel.Entities;
-using DomainModel.SQLCeRepository;
+using DomainModel.SQLiteRepository;
 using OfficeOpenXml;
 
 namespace Importer

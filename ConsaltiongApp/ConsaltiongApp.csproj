@@ -129,9 +129,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\DomainModel.SQLCeRepository\DomainModel.SQLCeRepository.csproj">
+    <ProjectReference Include="..\DomainModel.SQLiteRepository\DomainModel.SQLiteRepository.csproj">
       <Project>{c3def5fe-a363-4ccd-98ce-a87402242eb9}</Project>
-      <Name>DomainModel.SQLCeRepository</Name>
+      <Name>DomainModel.SQLiteRepository</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainModel\DomainModel.csproj">
       <Project>{D2B4F97D-2EEF-4704-BFD2-14FD5A25AEFD}</Project>

@@ -5,7 +5,7 @@ using DomainModel.Repository;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using DomainModel.SQLCeRepository;
+using DomainModel.SQLiteRepository;
 
 namespace ConsaltiongApp.ViewModel
 {

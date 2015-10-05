@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel", "DomainModel\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsaltiongApp", "ConsaltiongApp\ConsaltiongApp.csproj", "{892A343E-1109-4202-957C-32CA947767F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.SQLCeRepository", "DomainModel.SQLCeRepository\DomainModel.SQLCeRepository.csproj", "{C3DEF5FE-A363-4CCD-98CE-A87402242EB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.SQLiteRepository", "DomainModel.SQLiteRepository\DomainModel.SQLiteRepository.csproj", "{C3DEF5FE-A363-4CCD-98CE-A87402242EB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Importer", "Importer\Importer.csproj", "{66ED042D-0B0C-4998-B8F6-DEC54DD237FB}"
 EndProject

@@ -8,7 +8,7 @@ using DapperExtensions.Mapper;
 using DapperExtensions.Sql;
 using DomainModel.Repository;
 
-namespace DomainModel.SQLCeRepository
+namespace DomainModel.SQLiteRepository
 {
     public class DefaultConnectionFactory : IConnectionFactory
     {

@@ -50,9 +50,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DomainModel.SQLCeRepository\DomainModel.SQLCeRepository.csproj">
+    <ProjectReference Include="..\DomainModel.SQLiteRepository\DomainModel.SQLiteRepository.csproj">
       <Project>{c3def5fe-a363-4ccd-98ce-a87402242eb9}</Project>
-      <Name>DomainModel.SQLCeRepository</Name>
+      <Name>DomainModel.SQLiteRepository</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainModel\DomainModel.csproj">
       <Project>{d2b4f97d-2eef-4704-bfd2-14fd5a25aefd}</Project>

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using DomainModel.Repository;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
-using DomainModel.SQLCeRepository;
+using DomainModel.SQLiteRepository;
 
 namespace ConsaltiongApp.ViewModel
 {
