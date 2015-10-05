@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using Dapper;
@@ -34,21 +35,34 @@ namespace DomainModel.SQLCeRepository
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
-                var id = connection.Insert(q);
-
-                foreach (var answer in q.Answers)
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
                 {
-                    answer.QuestionId = id;
+                    try
+                    {
+                        var id = connection.Insert(q, transaction);
+
+                        foreach (var answer in q.Answers)
+                        {
+                            answer.QuestionId = id;
+                        }
+                        connection.Insert<Answer>(q.Answers, transaction);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
-                connection.Insert<Answer>(q.Answers);
             }
         }
 
         public void InitDb()
         {
-            //SqlCeEngine engine = new SqlCeEngine(ConfigurationManager.ConnectionStrings["Default"].ConnectionString);
-            
-            //engine.CreateDatabase();
+            if (!File.Exists(_connectionFactory.DbPath))
+                SQLiteConnection.CreateFile(_connectionFactory.DbPath);
+
             try
             {
                 using (var connection = _connectionFactory.CreateConnection())

@@ -6,8 +6,9 @@
         {
         }
 
-        public Answer(string title, bool isCorrect = false)
+        public Answer(int questionId, string title, bool isCorrect = false)
         {
+            QuestionId = questionId;
             Title = title;
             IsCorrect = isCorrect;
         }

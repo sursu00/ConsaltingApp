@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Reflection;
 using DapperExtensions.Mapper;
 using DapperExtensions.Sql;
@@ -21,7 +22,18 @@ namespace DomainModel.SQLCeRepository
 
         public IDbConnection CreateConnection()
         {
-            return new SQLiteConnection(ConfigurationManager.ConnectionStrings["Default"].ConnectionString);
+            var path = GetPath();
+            return new SQLiteConnection("Data source=" + path);
         }
+
+        private static string GetPath()
+        {
+            var dbName = ConfigurationManager.AppSettings["DbName"];
+            var dbPath = ConfigurationManager.AppSettings["DbPath"];
+            var path = Path.Combine(dbPath, dbName);
+            return Path.GetFullPath(path);
+        }
+
+        public string DbPath { get { return GetPath(); } }
     }
 }
