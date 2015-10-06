@@ -42,15 +42,11 @@
       <HintPath>..\ReferencesAssembly\GalaSoft.MvvmLight.WPF4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\ReferencesAssembly\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -63,15 +59,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Protocol.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="ViewModel\AddQuestionViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ProtokolViewModel.cs" />
+    <Compile Include="ViewModel\ProtocolViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\AddQuestionView.xaml.cs">
       <DependentUpon>AddQuestionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProtokolView.xaml.cs">
-      <DependentUpon>ProtokolView.xaml</DependentUpon>
+    <Compile Include="View\ProtocolView.xaml.cs">
+      <DependentUpon>ProtocolView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -97,8 +95,8 @@
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProtokolView.xaml">
-      <SubType>Form</SubType>
+    <Page Include="View\ProtocolView.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

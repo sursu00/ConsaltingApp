@@ -68,7 +68,6 @@
   <ItemGroup>
     <Compile Include="DefaultConnectionFactory.cs" />
     <Compile Include="Mappers\AnswerMapper.cs" />
-    <Compile Include="Mappers\ProtocolMapper.cs" />
     <Compile Include="Mappers\QuestionMapper.cs" />
     <Compile Include="QuestionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

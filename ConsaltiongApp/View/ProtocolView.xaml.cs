@@ -2,15 +2,9 @@
 
 namespace ConsaltiongApp.View
 {
-    /// <summary>
-    /// Description for ProtokolView.
-    /// </summary>
-    public partial class ProtokolView : Window
+    public partial class ProtocolView : Window
     {
-        /// <summary>
-        /// Initializes a new instance of the ProtokolView class.
-        /// </summary>
-        public ProtokolView()
+        public ProtocolView()
         {
             InitializeComponent();
         }

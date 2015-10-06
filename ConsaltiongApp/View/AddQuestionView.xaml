@@ -4,17 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="{Binding Source={StaticResource Locator}, Path=WindowTitle}"
+        Title="Представьтесь"
         DataContext="{Binding AddQuestion, Source={StaticResource Locator}}"
         Width="600" Height="250" WindowStartupLocation="CenterScreen">
 
     <Grid>
         <StackPanel Margin="10">
             <Grid>
+                <Grid.Resources>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Margin" Value="0,0,0,4" />
+                    </Style>
+                </Grid.Resources>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -23,28 +27,21 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Вопрос" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Text="{Binding Title}" DataContext="{Binding TempQuestion}" Grid.Row="0" Grid.Column="1"/>
-                <Label Content="Вариант ответа" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="answer" Grid.Row="1" Grid.Column="1" Text="{Binding SpecEmptyString,Mode=OneWay}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding AddAnswerCommand}" CommandParameter="{Binding ElementName=answer,Path=Text}"/>
-                    </TextBox.InputBindings>
-                </TextBox>
-                <Button Width="100" Height="23" Grid.Row="1" Grid.Column="2" Content="Добавить ответ"
-                        Command="{Binding AddAnswerCommand}" CommandParameter="{Binding ElementName=answer,Path=Text}" />
+                <Label Content="Фамилия" Grid.Row="0" Grid.Column="0"/>
+                <Label Content="Имя" Grid.Row="1" Grid.Column="0"/>
+                <Label Content="Отчество" Grid.Row="2" Grid.Column="0"/>
+                <Label Content="Взвод" Grid.Row="3" Grid.Column="0"/>
 
-                <!--DataContext="{Binding TempQuestion}"-->
-                <ListBox Name="listBoxAnswer" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Answers}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <CheckBox Content="Свободный ответ" Grid.Column="1" Grid.Row="3" DataContext="{Binding TempQuestion}" IsChecked="{Binding IsFree,Mode=TwoWay}"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LastName}" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MiddleName}"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding GroupName}"/>
+
             </Grid>
-            <Button Name="AddSaveButton" Margin="5" Width="70" Height="23" Content="{Binding ButtonText}" Command="{Binding AddSaveQuestionCommand}"/>
+            <StackPanel Orientation="Horizontal" Width="220" Margin="0,20,0,0">
+                <Button Name="LoginButton" Width="100" Height="25" Content="Начать тест" Command="{Binding LoginCommand}" IsEnabled="{Binding IsValidForm}" />
+                <Button Name="CloseButton" Width="100" Height="25" Margin="20,0,0,0" Content="Отменить и выйти" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

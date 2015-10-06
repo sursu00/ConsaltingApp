@@ -57,7 +57,7 @@ namespace ConsaltiongApp.ViewModel
     {
         private static MainViewModel _main;
         private static AddQuestionViewModel _addQuestion;
-        private static ProtokolViewModel _protorolView;
+        private static ProtocolViewModel _protorolView;
         
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
@@ -104,7 +104,7 @@ namespace ConsaltiongApp.ViewModel
             }
         }
 
-        public static ProtokolViewModel ProtokolView
+        public static ProtocolViewModel ProtocolView
         {
             get
             {
@@ -120,7 +120,7 @@ namespace ConsaltiongApp.ViewModel
         {
             if (_protorolView == null)
             {
-                _protorolView = new ProtokolViewModel();
+                _protorolView = new ProtocolViewModel();
             }
         }
 
@@ -166,11 +166,11 @@ namespace ConsaltiongApp.ViewModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
             "CA1822:MarkMembersAsStatic",
             Justification = "This non-static member is needed for data binding purposes.")]
-        public ProtokolViewModel Protokol
+        public ProtocolViewModel Protocol
         {
             get
             {
-                return ProtokolView;
+                return ProtocolView;
             }
         }
 
