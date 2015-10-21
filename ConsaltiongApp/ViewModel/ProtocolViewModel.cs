@@ -29,9 +29,9 @@ namespace ConsaltiongApp.ViewModel
             }
         }
 
-        private void Init(Protocol listP)
+        private void Init(Protocol protocol)
         {
-            Protocol = listP;
+            Protocol = protocol;
         }
     }
 }

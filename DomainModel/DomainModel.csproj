@@ -37,8 +37,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Answer.cs" />
+    <Compile Include="Entities\AppConfig.cs" />
     <Compile Include="Entities\Question.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\IAppConfigRepository.cs" />
     <Compile Include="Repository\IConnectionFactory.cs" />
     <Compile Include="Repository\IQuestionRepository.cs" />
   </ItemGroup>

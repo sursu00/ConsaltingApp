@@ -20,7 +20,7 @@ namespace ConsaltiongApp.View
 
         private void ButtonOk_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            App.Current.Shutdown();
         }
     }
 }

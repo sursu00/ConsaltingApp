@@ -11,7 +11,7 @@
     <Grid>        
         <StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBox Text="{Binding Protocol.UserFullName}" FontSize="14" IsReadOnly="True" BorderThickness="0" Background="Transparent" IsTabStop="False"/>
+                <TextBox Text="{Binding Protocol.UserName}" FontSize="14" IsReadOnly="True" BorderThickness="0" Background="Transparent" IsTabStop="False"/>
             </StackPanel>
             <ListBox Name="PrintCanvas" ItemsSource="{Binding Protocol.Answers}" HorizontalAlignment="Center" Margin="5" BorderThickness="0">
                 <ListBox.ItemTemplate>
@@ -31,8 +31,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="100" Content="Печать" Margin="5" Click="Button_Click" />
-                <Button Width="100" Name="ButtonOk" Content="Ok" Margin="5" Click="ButtonOk_Click" />
+                <Button Width="100" Name="ButtonOk" Content="Выйти" Margin="5" Click="ButtonOk_Click" />
             </StackPanel>
         </StackPanel>
     </Grid>

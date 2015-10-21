@@ -12,6 +12,8 @@ namespace DomainModel.SQLiteRepository.Mappers
             Map(x => x.Id).Column("id").Key(KeyType.Identity);
 
             Map(x => x.Title).Column("title");
+            
+            Map(x => x.QuestionType).Column("question_type");
 
             //Map(x => x.Answers).Ignore();
         }

@@ -66,8 +66,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppConfigRepository.cs" />
     <Compile Include="DefaultConnectionFactory.cs" />
     <Compile Include="Mappers\AnswerMapper.cs" />
+    <Compile Include="Mappers\AppConfigMapper.cs" />
     <Compile Include="Mappers\QuestionMapper.cs" />
     <Compile Include="QuestionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

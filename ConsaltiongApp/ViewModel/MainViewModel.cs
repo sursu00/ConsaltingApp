@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using ConsaltiongApp.Messages;
 using ConsaltiongApp.Models;
 using ConsaltiongApp.View;
 using DomainModel.Entities;
@@ -28,7 +29,8 @@ namespace ConsaltiongApp.ViewModel
         public const string CurrentQuestionPropertyName = "CurrentQuestion";
         
         private Question _currentQuestion;
-        private const int QuestionCount = 5;
+        private ResultView _resultWindow;
+        private const int QuestionCount = 10;
 
         public Question CurrentQuestion
         {
@@ -57,12 +59,22 @@ namespace ConsaltiongApp.ViewModel
             TakeVariantAnswerCommand = new RelayCommand<string>(x => _currentAnswerId = int.Parse(x));
             
             Messenger.Default.Register<User>(this, Initialize);
+            Messenger.Default.Register<ShowProtocolMessage>(this, ShowProtocol);
+        }
+
+        private void ShowProtocol(ShowProtocolMessage obj)
+        {
+            _resultWindow.Close();
+
+            var protokolWindow = new ProtocolView();
+            Messenger.Default.Send<Protocol, ProtocolViewModel>(_protocol);
+            protokolWindow.ShowDialog();
         }
 
         private void Initialize(User user)
         {
             _user = user;
-            _protocol = new Protocol(_user.FullName);
+            _protocol = new Protocol(string.Format("{0} {1}", _user.FullName, _user.GroupName));
 
             _questions = _repository.GetQuestions().OrderBy(x => Guid.NewGuid()).ToArray();
             CurrentQuestion = _questions.First();
@@ -80,16 +92,17 @@ namespace ConsaltiongApp.ViewModel
             var answer = _currentQuestion.Answers.First(x => x.Id == _currentAnswerId);
             
             //Ведение протокола
-            _protocol.AddAnswer(_currentQuestion.Title, answer.Title, answer.IsCorrect);
+            var answers = _currentQuestion.Answers.Select(x => x.Title).ToArray();
+            _protocol.AddAnswer(_currentQuestion.Title, answer.Title, answers, answer.IsCorrect);
 
             var currentIndex = Array.IndexOf(_questions, CurrentQuestion);
             CurrentQuestion = _questions[currentIndex + 1];
 
             if (_protocol.Answers.Count() < QuestionCount) return;
 
-            var protokolWindow = new ProtocolView();
-            Messenger.Default.Send<Protocol, ProtocolViewModel>(_protocol);
-            protokolWindow.ShowDialog();
+            _resultWindow = new ResultView();
+            Messenger.Default.Send<Protocol, ResultViewModel>(_protocol);
+            _resultWindow.ShowDialog();
         }
     }
 }

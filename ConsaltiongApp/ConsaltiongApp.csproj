@@ -59,12 +59,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Messages\ShowProtocolMessage.cs" />
     <Compile Include="Models\Protocol.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ViewModel\AddQuestionViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ProtocolViewModel.cs" />
+    <Compile Include="ViewModel\ResultViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\ResultView.xaml.cs">
+      <DependentUpon>ResultView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AddQuestionView.xaml.cs">
       <DependentUpon>AddQuestionView.xaml</DependentUpon>
     </Compile>
@@ -88,6 +93,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Skins\MainSkin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ResultView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

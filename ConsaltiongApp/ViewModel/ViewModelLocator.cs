@@ -58,6 +58,7 @@ namespace ConsaltiongApp.ViewModel
         private static MainViewModel _main;
         private static AddQuestionViewModel _addQuestion;
         private static ProtocolViewModel _protorolView;
+        private static ResultViewModel _resultView;
         
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
@@ -113,6 +114,18 @@ namespace ConsaltiongApp.ViewModel
                     CreateProtokolView();
                 }
                 return _protorolView;
+            }
+        }
+
+        public static ResultViewModel Result
+        {
+            get
+            {
+                if (_resultView == null)
+                {
+                    _resultView = new ResultViewModel();
+                }
+                return _resultView;
             }
         }
 

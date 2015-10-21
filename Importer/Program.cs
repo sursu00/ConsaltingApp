@@ -73,7 +73,7 @@ namespace Importer
                 {
                     var questionId = int.Parse(questions.Cells[i, 1].Value.ToString());
                     var title = questions.Cells[i, 2].Value.ToString();
-                    resultQuestions.Add(new Question(title, resultAnswers[questionId]));
+                    resultQuestions.Add(new Question(title, resultAnswers[questionId], QuestionType.Text));
                 }
 
                 return resultQuestions;
