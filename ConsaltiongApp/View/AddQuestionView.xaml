@@ -32,14 +32,14 @@
                 <Label Content="Отчество" Grid.Row="2" Grid.Column="0"/>
                 <Label Content="Взвод" Grid.Row="3" Grid.Column="0"/>
 
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LastName}" />
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MiddleName}"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding GroupName}"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MiddleName, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}"/>
 
             </Grid>
             <StackPanel Orientation="Horizontal" Width="220" Margin="0,20,0,0">
-                <Button Name="LoginButton" Width="100" Height="25" Content="Начать тест" Command="{Binding LoginCommand}" IsEnabled="{Binding IsValidForm}" />
+                <Button Name="LoginButton" Width="100" Height="25" Content="Начать тест" Command="{Binding LoginCommand}" />
                 <Button Name="CloseButton" Width="100" Height="25" Margin="20,0,0,0" Content="Отменить и выйти" />
             </StackPanel>
         </StackPanel>

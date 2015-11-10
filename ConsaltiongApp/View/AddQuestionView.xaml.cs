@@ -8,7 +8,7 @@ namespace ConsaltiongApp.View
         {
             InitializeComponent();
             LoginButton.Click += (sender, e) => { Close(); };
-            CloseButton.Click += (sender, e) => { Close(); };
+            CloseButton.Click += (sender, e) => { Application.Current.Shutdown(1); };
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using ConsaltiongApp.Models;
+﻿using ConsaltiongApp.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -30,7 +29,6 @@ namespace ConsaltiongApp.ViewModel
 
                 _firstName = value;
                 RaisePropertyChanged(FirstNamePropertyName);
-                RaisePropertyChanged(IsValidFormPropertyName);
             }
         }
 
@@ -54,7 +52,6 @@ namespace ConsaltiongApp.ViewModel
 
                 _lastName = value;
                 RaisePropertyChanged(LastNamePropertyName);
-                RaisePropertyChanged(IsValidFormPropertyName);
             }
         }
 
@@ -78,7 +75,6 @@ namespace ConsaltiongApp.ViewModel
 
                 _middleName = value;
                 RaisePropertyChanged(MiddleNamePropertyName);
-                RaisePropertyChanged(IsValidFormPropertyName);
             }
         }
 
@@ -102,37 +98,24 @@ namespace ConsaltiongApp.ViewModel
 
                 _groupName = value;
                 RaisePropertyChanged(GroupNamePropertyName);
-                RaisePropertyChanged(IsValidFormPropertyName);
             }
         }
 
         public AddQuestionViewModel()
         {
-            LoginCommand = new RelayCommand(AddAnswer);
+            LoginCommand = new RelayCommand(AddAnswer, IsValidForm);
         }
 
-
-        public const string IsValidFormPropertyName = "IsValidForm";
-        public bool IsValidForm
+        private bool IsValidForm()
         {
-            get
-            {
-                return string.IsNullOrEmpty(_firstName) == false && string.IsNullOrEmpty(_lastName) == false
+            return string.IsNullOrEmpty(_firstName) == false && string.IsNullOrEmpty(_lastName) == false
                    && string.IsNullOrEmpty(_middleName) == false && string.IsNullOrEmpty(_groupName) == false;
-            }
         }
         
         private void AddAnswer()
         {
-            if (IsValidForm == false)
-            {
-                MessageBox.Show("Заполните все поля!");
-            }
-            else
-            {
-                var user = new User(_firstName, _lastName, _middleName, _groupName);
-                Messenger.Default.Send<User, MainViewModel>(user);
-            }
+            var user = new User(_firstName, _lastName, _middleName, _groupName);
+            Messenger.Default.Send<User, MainViewModel>(user);
         }
     }
 }
