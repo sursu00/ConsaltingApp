@@ -11,6 +11,7 @@ using DomainModel.SQLiteRepository;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Question = ConsaltiongApp.Models.Question;
 
 namespace ConsaltiongApp.ViewModel
 {
@@ -76,8 +77,23 @@ namespace ConsaltiongApp.ViewModel
             _user = user;
             _protocol = new Protocol(string.Format("{0} {1}", _user.FullName, _user.GroupName));
 
-            _questions = _repository.GetQuestions().OrderBy(x => Guid.NewGuid()).ToArray();
+
+            _questions = InitQuestions();
             CurrentQuestion = _questions.First();
+        }
+
+        private Question[] InitQuestions()
+        {
+            var allQuestions = _repository.GetQuestions().OrderBy(x => Guid.NewGuid()).ToArray();
+            var tempQuestions = allQuestions
+                .Where(x => x.QuestionType == QuestionType.Text)
+                .Take(QuestionCount - 2)
+                .Select(x=> x.ToQuestion())
+                .ToList();
+
+            tempQuestions.Add(allQuestions.First(x => x.QuestionType == QuestionType.ImageAnswer).ToQuestion());
+            tempQuestions.Add(allQuestions.First(x => x.QuestionType == QuestionType.ImageQuestion).ToQuestion());
+            return tempQuestions.ToArray();
         }
 
 
@@ -95,10 +111,12 @@ namespace ConsaltiongApp.ViewModel
             var answers = _currentQuestion.Answers.Select(x => x.Title).ToArray();
             _protocol.AddAnswer(_currentQuestion.Title, answer.Title, answers, answer.IsCorrect);
 
-            var currentIndex = Array.IndexOf(_questions, CurrentQuestion);
-            CurrentQuestion = _questions[currentIndex + 1];
-
-            if (_protocol.Answers.Count() < QuestionCount) return;
+            if (_protocol.Answers.Count < QuestionCount)
+            {
+                var currentIndex = Array.IndexOf(_questions, CurrentQuestion);
+                CurrentQuestion = _questions[currentIndex + 1];
+                return;
+            }
 
             _resultWindow = new ResultView();
             Messenger.Default.Send<Protocol, ResultViewModel>(_protocol);

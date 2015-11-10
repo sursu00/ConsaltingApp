@@ -60,7 +60,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Messages\ShowProtocolMessage.cs" />
+    <Compile Include="Models\Answer.cs" />
+    <Compile Include="Models\Helper.cs" />
     <Compile Include="Models\Protocol.cs" />
+    <Compile Include="Models\Question.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ViewModel\AddQuestionViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -125,7 +128,7 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

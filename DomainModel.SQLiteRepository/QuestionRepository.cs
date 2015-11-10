@@ -24,10 +24,31 @@ namespace DomainModel.SQLiteRepository
             {
                 var answers = connection.GetList<Answer>().ToArray();
                 var questions = connection.GetList<Question>().ToList();
+
                 foreach (var question in questions)
                 {
                     question.Answers = answers.Where(x => x.QuestionId == question.Id).ToList();
+                    
+                    if (question.QuestionType == QuestionType.ImageQuestion)
+                    {
+                        question.Image =
+                            connection
+                                .GetList<Image>(Predicates.Field<Image>(f => f.Name, Operator.Eq, question.Title))
+                                .FirstOrDefault();
+                    }
+
+                    if (question.QuestionType == QuestionType.ImageAnswer)
+                    {
+                        foreach (var answer in answers)
+                        {
+                            answer.Image =
+                                connection
+                                    .GetList<Image>(Predicates.Field<Image>(f => f.Name, Operator.Eq, answer.Title))
+                                    .FirstOrDefault();
+                        }
+                    }
                 }
+                
                 return questions.ToArray();
             }
         }
@@ -44,10 +65,18 @@ namespace DomainModel.SQLiteRepository
                         var id = connection.Insert(q, transaction);
 
                         foreach (var answer in q.Answers)
-                        {
                             answer.QuestionId = id;
-                        }
+
+                        connection.Insert(q.Answers
+                            .Where(x => x.Image != null)
+                            .Select(x => x.Image),
+                            transaction);
+
                         connection.Insert<Answer>(q.Answers, transaction);
+
+                        if (q.Image != null)
+                            connection.Insert(q.Image, transaction);
+
                         transaction.Commit();
                     }
                     catch

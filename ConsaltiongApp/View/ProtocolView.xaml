@@ -24,7 +24,20 @@
                                 <TextBlock Text="{Binding Answer}" Margin="5"/>
                             </Border>
                             <Border BorderThickness="1" Width="50" BorderBrush="Black">
-                                <TextBlock Text="{Binding IsCorrect}" Margin="5"/>
+                                <TextBlock Margin="5">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCorrect}" Value="True">
+                                                    <Setter Property="Text" Value="Верно" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsCorrect}" Value="False">
+                                                    <Setter Property="Text" Value="Неверно" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </Border>
                         </StackPanel>
                     </DataTemplate>

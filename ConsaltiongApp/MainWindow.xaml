@@ -16,40 +16,35 @@
         </ResourceDictionary>                   
     </Window.Resources>
     
-    <Window.InputBindings>
-        <KeyBinding Modifiers="Control" Key="N" Command="{Binding RestartConsalting}" />
-    </Window.InputBindings>
-    
     <Grid x:Name="LayoutRoot">
-        <Grid.RowDefinitions>
-            <RowDefinition Name="FirstRow" MaxHeight="270"/>
-            <RowDefinition Height="Auto"  />
-        </Grid.RowDefinitions>
-
-        <StackPanel Grid.Row="0">
+        <StackPanel>
             <Label Content="{Binding Title}" DataContext="{Binding CurrentQuestion}" />
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5" Grid.Column="1">
-                    <StackPanel>
-                        <ListView Name="RadioButtonList" DataContext="{Binding CurrentQuestion}" ItemsSource="{Binding Answers}" >
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <RadioButton x:Name="radioB" GroupName="radioList" Content="{Binding Title}" Uid="{Binding Id}">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="Checked">
-                                                <!--<cmd:EventToCommand Command="{Binding Source={StaticResource Locator}, Path=GoNext,Mode=OneWay}" CommandParameter="1" />-->
-                                                <i:InvokeCommandAction 
-                                                Command="{Binding Main.TakeVariantAnswerCommand, Source={StaticResource Locator}}"
-                                                CommandParameter="{Binding Uid, ElementName=radioB}"/>
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </RadioButton>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
-                </Border>
+            <Image Source="{Binding Image}" HorizontalAlignment="Left" Width="100" MaxHeight="100" DataContext="{Binding CurrentQuestion}"></Image>
+            <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
+                <StackPanel>
+                    <ListView Name="RadioButtonList" DataContext="{Binding CurrentQuestion}" ItemsSource="{Binding Answers}" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton x:Name="radioB" GroupName="radioList" Uid="{Binding Id}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Checked">
+                                            <i:InvokeCommandAction 
+                                            Command="{Binding Main.TakeVariantAnswerCommand, Source={StaticResource Locator}}"
+                                            CommandParameter="{Binding Uid, ElementName=radioB}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding Title}" HorizontalAlignment="Left" Visibility="{Binding Path=IsShowImage, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                                    <Image Source="{Binding Image}" Width="100" MaxHeight="100" />
+                                </WrapPanel>
+                            </RadioButton>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
             
-            <Button Width="90" HorizontalAlignment="Right" Margin="5" Content="Далее" Command="{Binding GoNextCommand,Mode=OneWay}" />
+            <Button Width="90" HorizontalAlignment="Right" Margin="5" Content="Далее" Command="{Binding GoNextCommand, Mode=OneWay}" />
         </StackPanel>
     </Grid>
 </Window>

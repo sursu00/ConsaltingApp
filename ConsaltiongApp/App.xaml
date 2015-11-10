@@ -8,5 +8,6 @@
              mc:Ignorable="d">
     <Application.Resources>
         <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
     </Application.Resources>
 </Application>

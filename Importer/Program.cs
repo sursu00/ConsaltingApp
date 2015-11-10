@@ -10,10 +10,10 @@ namespace Importer
 {
     internal class Program
     {
-        private static string GetPath()
+        private static string GetPath(string filename = "input.xlsx")
         {
             var dbPath = ConfigurationManager.AppSettings["DbPath"];
-            var path = Path.Combine(dbPath, "input.xlsx");
+            var path = Path.Combine(dbPath, filename);
             return Path.GetFullPath(path);
         }
 
@@ -73,7 +73,26 @@ namespace Importer
                 {
                     var questionId = int.Parse(questions.Cells[i, 1].Value.ToString());
                     var title = questions.Cells[i, 2].Value.ToString();
-                    resultQuestions.Add(new Question(title, resultAnswers[questionId], QuestionType.Text));
+                    var questionType = (QuestionType)Enum.Parse(typeof(QuestionType), questions.Cells[i, 3].Value.ToString());
+
+                    Image image = null;
+                    if (questionType == QuestionType.ImageQuestion)
+                    {
+                        var data = File.ReadAllBytes(GetPath(Path.Combine("Images", title)));
+                        image = new Image(title, data);
+                    }
+
+                    if (questionType == QuestionType.ImageAnswer)
+                    {
+                        foreach (var answer in resultAnswers[questionId])
+                        {
+                            var data = File.ReadAllBytes(GetPath(Path.Combine("Images", answer.Title)));
+                            image = new Image(answer.Title, data);
+                            answer.Image = image;
+                        }
+                    }
+
+                    resultQuestions.Add(new Question(title, resultAnswers[questionId], questionType, image));
                 }
 
                 return resultQuestions;
@@ -93,6 +112,7 @@ namespace Importer
 
                 questions.Cells[1, 1].Value = "Номер вопроса";
                 questions.Cells[1, 2].Value = "Вопрос";
+                questions.Cells[1, 3].Value = "Тип вопроса";
 
                 answers.Cells[1, 1].Value = "Номер вопроса";
                 answers.Cells[1, 2].Value = "Вариант ответа";
@@ -104,6 +124,7 @@ namespace Importer
 
                     questions.Cells[i, 1].Value = questionId;
                     questions.Cells[i, 2].Value = "Вопрос № " + questionId;
+                    questions.Cells[i, 3].Value = random.Next(0, 2);
 
                     var index = (questionId - 1)*4 + 2;
 
