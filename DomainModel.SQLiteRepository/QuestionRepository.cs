@@ -12,6 +12,7 @@ namespace DomainModel.SQLiteRepository
     public class QuestionRepository : IQuestionRepository
     {
         private readonly IConnectionFactory _connectionFactory;
+        private const int QuestionCount = 10;
 
         public QuestionRepository()
         {
@@ -22,8 +23,28 @@ namespace DomainModel.SQLiteRepository
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
-                var answers = connection.GetList<Answer>().ToArray();
-                var questions = connection.GetList<Question>().ToList();
+                var questions = connection.GetList<Question>()
+                    .OrderBy(x => Guid.NewGuid())
+                    .Where(x => x.QuestionType == QuestionType.Text)
+                    .Take(QuestionCount - 2)
+                    .ToList();
+
+                var imageAnswer = connection.GetList<Question>()
+                    .OrderBy(x => Guid.NewGuid())
+                    .Where(x => x.QuestionType == QuestionType.ImageAnswer)
+                    .First();
+
+                var imageQuestion = connection.GetList<Question>()
+                    .OrderBy(x => Guid.NewGuid())
+                    .Where(x => x.QuestionType == QuestionType.ImageQuestion)
+                    .First();
+
+                questions.Add(imageAnswer);
+                questions.Add(imageQuestion);
+
+                var answers = connection.GetList<Answer>()
+                    .Where(a => questions.Select(q => q.Id).Contains(a.QuestionId))
+                    .ToArray();
 
                 foreach (var question in questions)
                 {

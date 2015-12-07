@@ -30,6 +30,7 @@ namespace ConsaltiongApp.ViewModel
         
         private Question _currentQuestion;
         private ResultView _resultWindow;
+
         private const int QuestionCount = 10;
 
         public Question CurrentQuestion
@@ -77,24 +78,9 @@ namespace ConsaltiongApp.ViewModel
             _protocol = new Protocol(string.Format("{0} {1}", _user.FullName, _user.GroupName));
 
 
-            _questions = InitQuestions();
+            _questions = _repository.GetQuestions().Select(x => x.ToQuestion()).ToArray();
             CurrentQuestion = _questions.First();
         }
-
-        private Question[] InitQuestions()
-        {
-            var allQuestions = _repository.GetQuestions().OrderBy(x => Guid.NewGuid()).ToArray();
-            var tempQuestions = allQuestions
-                .Where(x => x.QuestionType == QuestionType.Text)
-                .Take(QuestionCount - 2)
-                .Select(x=> x.ToQuestion())
-                .ToList();
-
-            tempQuestions.Add(allQuestions.First(x => x.QuestionType == QuestionType.ImageAnswer).ToQuestion());
-            tempQuestions.Add(allQuestions.First(x => x.QuestionType == QuestionType.ImageQuestion).ToQuestion());
-            return tempQuestions.ToArray();
-        }
-
 
         private void DoSomething()
         {
