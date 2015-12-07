@@ -18,10 +18,10 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Border BorderThickness="1" Width="300" BorderBrush="Black">
-                                <TextBlock Text="{Binding Question}" Margin="5" />
+                                <TextBlock Text="{Binding Question}" TextWrapping="WrapWithOverflow" Margin="5" />
                             </Border>
                             <Border BorderThickness="1" Width="120" BorderBrush="Black">
-                                <TextBlock Text="{Binding Answer}" Margin="5"/>
+                                <TextBlock Text="{Binding Answer}" TextWrapping="WrapWithOverflow" Margin="5"/>
                             </Border>
                             <Border BorderThickness="1" Width="50" BorderBrush="Black">
                                 <TextBlock Margin="5">

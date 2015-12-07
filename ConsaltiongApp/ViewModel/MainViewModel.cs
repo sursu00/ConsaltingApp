@@ -91,6 +91,8 @@ namespace ConsaltiongApp.ViewModel
             }
             
             var answer = _currentQuestion.Answers.First(x => x.Id == _currentAnswerId);
+
+            _currentAnswerId = null;
             
             //Ведение протокола
             var answers = _currentQuestion.Answers.Select(x => x.Title).ToArray();

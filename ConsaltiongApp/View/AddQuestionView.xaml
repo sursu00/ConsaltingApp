@@ -25,21 +25,24 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Label Content="Фамилия" Grid.Row="0" Grid.Column="0"/>
                 <Label Content="Имя" Grid.Row="1" Grid.Column="0"/>
                 <Label Content="Отчество" Grid.Row="2" Grid.Column="0"/>
                 <Label Content="Взвод" Grid.Row="3" Grid.Column="0"/>
+                <Label Content="Пароль для старта" Grid.Row="4" Grid.Column="0"/>
 
                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MiddleName, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}"/>
-
+                <PasswordBox Grid.Row="4" Grid.Column="1" Name="Password" />
+                
             </Grid>
             <StackPanel Orientation="Horizontal" Width="220" Margin="0,20,0,0">
-                <Button Name="LoginButton" Width="100" Height="25" Content="Начать тест" Command="{Binding LoginCommand}" />
+                <Button Name="LoginButton" Width="100" Height="25" Content="Начать тест" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=Password}" />
                 <Button Name="CloseButton" Width="100" Height="25" Margin="20,0,0,0" Content="Отменить и выйти" />
             </StackPanel>
         </StackPanel>

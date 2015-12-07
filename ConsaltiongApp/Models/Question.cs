@@ -14,6 +14,12 @@ namespace ConsaltiongApp.Models
             Title = title;
             Answers = answers.Select(x => x.ToAnswer(questionType)).ToList();
             QuestionType = questionType;
+
+            if (QuestionType == DomainModel.Entities.QuestionType.ImageQuestion)
+            {
+                Title = "Что на картинке?";
+            }
+
             if (image != null)
                 Image = image.ToImage();
         }

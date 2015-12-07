@@ -6,7 +6,8 @@
         Height="400"
         Width="800"
         WindowStartupLocation="CenterScreen"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        ResizeMode="NoResize" WindowState="Maximized">
     
     <Window.Resources>
         <ResourceDictionary>
@@ -18,14 +19,16 @@
     
     <Grid x:Name="LayoutRoot">
         <StackPanel>
-            <Label Content="{Binding Title}" DataContext="{Binding CurrentQuestion}" />
+            <Label FontSize="16">
+                <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Title}" DataContext="{Binding CurrentQuestion}"></TextBlock>
+            </Label>
             <Image Source="{Binding Image}" HorizontalAlignment="Left" Width="100" MaxHeight="100" DataContext="{Binding CurrentQuestion}"></Image>
             <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                 <StackPanel>
                     <ListView Name="RadioButtonList" DataContext="{Binding CurrentQuestion}" ItemsSource="{Binding Answers}" >
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <RadioButton x:Name="radioB" GroupName="radioList" Uid="{Binding Id}">
+                                <RadioButton x:Name="radioB" GroupName="radioList" Uid="{Binding Id}" FontSize="16" VerticalContentAlignment="Center">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Checked">
                                             <i:InvokeCommandAction 
@@ -33,11 +36,11 @@
                                             CommandParameter="{Binding Uid, ElementName=radioB}"/>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
-                                <WrapPanel>
-                                    <TextBlock Text="{Binding Title}" HorizontalAlignment="Left" Visibility="{Binding Path=IsShowImage, Converter={StaticResource booleanToVisibilityConverter}}"/>
-                                    <Image Source="{Binding Image}" Width="100" MaxHeight="100" />
-                                </WrapPanel>
-                            </RadioButton>
+                                    <WrapPanel>
+                                        <TextBlock Text="{Binding Title}" HorizontalAlignment="Left" Visibility="{Binding Path=IsShowImage, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                                        <Image Source="{Binding Image}" Width="100" MaxHeight="100" />
+                                    </WrapPanel>
+                                </RadioButton>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

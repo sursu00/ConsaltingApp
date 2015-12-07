@@ -1,13 +1,19 @@
 ﻿using ConsaltiongApp.Models;
+using DomainModel.Entities;
+using DomainModel.Repository;
+using DomainModel.SQLiteRepository;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace ConsaltiongApp.ViewModel
 {
     public class AddQuestionViewModel : ViewModelBase
     {
-        public RelayCommand LoginCommand { get; private set; }
+        private readonly AppConfig _appConfig;
+        public RelayCommand<object> LoginCommand { get; private set; }
         
         public const string FirstNamePropertyName = "FirstName";
 
@@ -103,16 +109,22 @@ namespace ConsaltiongApp.ViewModel
 
         public AddQuestionViewModel()
         {
-            LoginCommand = new RelayCommand(AddAnswer, IsValidForm);
+            LoginCommand = new RelayCommand<object>(AddAnswer, IsValidForm);
+            IAppConfigRepository appConfigRepository = new AppConfigRepository();
+            _appConfig = appConfigRepository.GetConfig();
         }
 
-        private bool IsValidForm()
+        private bool IsValidForm(object parameter)
         {
-            return string.IsNullOrEmpty(_firstName) == false && string.IsNullOrEmpty(_lastName) == false
-                   && string.IsNullOrEmpty(_middleName) == false && string.IsNullOrEmpty(_groupName) == false;
+            var passwordBox = parameter as PasswordBox;
+            var password = passwordBox != null ? passwordBox.Password : null;
+
+            return password == _appConfig.Password2 && string.IsNullOrEmpty(_firstName) == false
+                && string.IsNullOrEmpty(_lastName) == false && string.IsNullOrEmpty(_middleName) == false
+                && string.IsNullOrEmpty(_groupName) == false;
         }
-        
-        private void AddAnswer()
+
+        private void AddAnswer(object parameter)
         {
             var user = new User(_firstName, _lastName, _middleName, _groupName);
             Messenger.Default.Send<User, MainViewModel>(user);
